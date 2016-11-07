@@ -72,14 +72,6 @@ var makeCounter = function() {
   count(); // 4
 
 
-
-
-
-
-
-
-
-
 /******************************************************************************\
 	#PROBLEM-04
 \******************************************************************************/
@@ -92,12 +84,19 @@ function is responsible for decrementing the value by one. You will need to use
 the module pattern to achieve this. */
 
 function counterFactory(value) {
-
+  var val = value;
   // Code here.
-
-
-  return {
+  function increment() {
+    val++;
+    return val;
   }
+  function decrement() {
+    val--;
+    return val;
+  }
+
+  return {inc:increment, dec:decrement};
+  
 }
 
 
@@ -125,10 +124,12 @@ function motivation(firstname, lastname){
   var welcomeText = 'You\'re doing awesome, keep it up ';
 
   // code message function here.
-
+  function message() {
+    return welcomeText + firstname +  " " +lastname +".";
+  }
 
   //Uncommment this to return the value of your invoked message function
-  //return message();
+  return message();
 
 }
 
@@ -167,13 +168,13 @@ var module = (function() {
 	// outside our lexical scope
 
   return {
-    // Code here.
+    publicMethod:privateMethod
   };
 
 })();
 
 // Uncomment this after you create your public method
-//   module.publicMethod();
+   module.publicMethod();
 
 
 
@@ -196,13 +197,13 @@ then 3, etc). Run this code in your console to see what the output is. */
 // To make this code work you will need to create a new scope for every iteration.
 function timeOutCounter() {
   for (var i = 0; i <= 5; i++) {
-    setTimeout(function() {
-      console.log(i);
-    }, i * 1000)
+    setTimeout(newScope(i), i * 1000)
   }
 
   function newScope(i) {
-    console.log(i)
+    return function() {
+      console.log(i)
+    }
   }
 }
 timeOutCounter();
@@ -217,16 +218,26 @@ timeOutCounter();
 \******************************************************************************/
 
 var funcArray = [];
+function pointlessFunc(num) {
+  return function() {
+    return num;
+  }
+}
+for (var i = 0; i < 6; i++) {
+  funcArray[i] = pointlessFunc(i);
+}
+
+
 
 /*
   Make the following code work
-
+*/
   funcArray[0]() //0
   funcArray[1]() //1
   funcArray[2]() //2
   funcArray[3]() //3
   funcArray[4]() //4
   funcArray[5]() //5
-
+/*
   *Hint: Don't let this fool you. Break down what's really happening here.
 */
